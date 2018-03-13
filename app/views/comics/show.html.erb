@@ -1,0 +1,81 @@
+<div class="row">
+  <div class="col-md-4">
+    <%= image_tag(@comic.image_url, size: "320x515") %>
+  </div>
+  <div class="col-md-8">
+    <strong><h2> <%= @comic.name %></h2></strong>
+
+    <h4>
+      <span class='label label-primary'><%= @theme %></span>
+    </h4>
+
+    <label> 出版时间： </label> <%= @comic.time %> <br/>
+
+    <label> 漫画类型： </label> <label class='label label-primary'> <%= @type %> </label> <br/>
+    <label> 漫画地区： </label> <label class='label label-primary'> <%= @country %> </label> <br/>
+
+
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">内容简介</h3>
+      </div>
+      <div class="panel-body">
+        <%= @comic.introduce %>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="container">
+  <strong> 已有 <%= @comic.comment_ids.size %> 条评论 </strong> <br/>
+  <% Comment.where(comic_id: @comic.id).each do |comment| %>
+
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title"><%= comment.user.nickname %>
+            发表在 <%= distance_of_time_in_words_to_now(comment.updated_at) %> ago </h3>
+        </div>
+        <div class="panel-body">
+          <%= comment.content %>
+        </div>
+      </div>
+  <% end %>
+</div>
+
+<br/>
+
+<% %>
+
+<% if user_signed_in? %>
+    <% @comment ||= @comic.comments.build %>
+    <%= form_for([@comic, @comment]) do |f| %>
+        <% @comment.comic_id = @comic.id %>
+        <%= f.label :content, "发表你的评论" %>
+        <div class='row'>
+          <div class='col-md-11'>
+            <%= f.text_area :content, class: 'form-control', row: 4 %><br>
+          </div>
+          <div class='col-md-1'>
+            <br>
+            <%= f.submit '提交', class: 'btn btn-lg btn-primary btn-block' %>
+          </div>
+        </div>
+    <% end -%>
+<% else %>
+
+<% end %>
+
+
+
+<p>
+<center><%= button_tag '更新该漫画', type: 'button', class: 'btn btn-sm btn-primary', onclick: "window.location.href='/comics/#{@comic.id}/edit'" %></center>
+</p>
+<center>
+  <%= button_to '删除该漫画', comic_path(@comic), :method => :delete, :data => {:confirm => "Are you sure?"}, class: 'btn btn-sm btn-danger' %>
+</center>
+<p>
+<center>
+  <%= link_to "返回主菜单", comics_path %>
+</center>
+</p>

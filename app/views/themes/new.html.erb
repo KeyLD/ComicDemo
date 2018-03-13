@@ -1,0 +1,18 @@
+<div class='container'>
+
+  <%= form_for @theme, url: themes_path,html: {class: 'form-signin' } do |f| %>
+
+      <h2 class="form-signin-heading">新增漫画题材</h2>
+
+      <%= f.label :name, '题材名称', class: 'sr-only' %>
+      <%= f.text_field :name, auto_complete: "off", class: 'form-control', placeholder: '题材名称' %>
+
+      <br/>
+
+      <p><%= f.submit '提交', class: 'btn btn-lg btn-primary btn-block' %> </p>
+
+      <center><%= button_to '返回主页', comics_path, class: 'btn btn-sm btn-primary' %> </center>
+  <% end %>
+
+
+</div>

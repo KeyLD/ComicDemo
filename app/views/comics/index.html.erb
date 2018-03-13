@@ -1,0 +1,129 @@
+<div class="row row-offcanvas row-offcanvas-right">
+
+  <div class="col-xs-12 col-sm-9">
+
+    <% cnt = 0 %>
+    <% @comics.each do |comic| %>
+
+        <%= render :partial => 'before_cnt', :locals => {:cnt => cnt} %>
+
+        <div class="col-md-3">
+          <p> <%= image_tag(comic.image_url, size: "220x320") %> </p>
+          <%= link_to comic.name, comic_path(comic) %>
+        </div>
+
+        <%= render :partial => 'after_cnt', :locals => {:cnt => cnt} %>
+        <% if (cnt+1)%3==0 %>
+            <hr>
+        <% end %>
+
+        <% cnt+=1 %>
+    <% end %>
+    <%= render :partial => 'final_cnt', :locals => {:cnt => cnt} %>
+    <% if cnt%3!=0 %>
+        <hr>
+    <% end %>
+
+  </div>
+
+  <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
+
+
+    <%= search_form_for @q do |f| %>
+
+        <div class='row'>
+          <div class='col-xs-8'>
+            <%= f.label :name_cont, class: 'sr-only' %>
+            <%= f.search_field :name_cont, autocomplete: "off", class: 'form-control', placeholder: '漫画名称检索' %>
+          </div>
+          <div class='col-xs-4'>
+            <%= f.submit class: 'btn btn-sm btn-primary' %>
+          </div>
+        </div>
+
+        <br/>
+    <% end %>
+
+    <div class="list-group">
+      <%= link_to '新增漫画', new_comic_path, class: 'list-group-item' %>
+      <%= link_to '新增漫画类型', new_type_path, class: 'list-group-item' %>
+      <%= link_to '新增漫画地区', new_country_path, class: 'list-group-item' %>
+      <%= link_to '新增漫画主题', new_theme_path, class: 'list-group-item' %>
+    </div>
+
+
+    <h3> 筛选 </h3>
+
+    <!-- <button type="button" class="btn btn-link">Link</button> -->
+    <h4><span class="label label-primary">类型:</span></h4>
+
+    <% cnt = 0 %>
+    <% Type.all.each do |type| %>
+        <%= render :partial => 'before_cnt', :locals => {:cnt => cnt} %>
+        <div class="col-sm-1">
+          <%= '  ' + type.name %>
+        </div>
+        <%= render :partial => 'after_cnt', :locals => {:cnt => cnt} %>
+        <% cnt+=1 %>
+    <% end %>
+    <%= render :partial => 'final_cnt', :locals => {:cnt => cnt} %>
+
+    <h4><span class="label label-primary">地区:</span></h4>
+
+    <% cnt = 0 %>
+    <% Country.all.each do |country| %>
+        <%= render :partial => 'before_cnt', :locals => {:cnt => cnt} %>
+        <div class="col-sm-1">
+          <%= '  ' + country.name %>
+        </div>
+        <%= render :partial => 'after_cnt', :locals => {:cnt => cnt} %>
+        <% cnt+=1 %>
+    <% end %>
+    <%= render :partial => 'final_cnt', :locals => {:cnt => cnt} %>
+
+    <h4><span class="label label-primary">题材:</span></h4>
+
+    <% cnt = 0 %>
+    <% Theme.all.each do |theme| %>
+        <%= render :partial => 'before_cnt', :locals => {:cnt => cnt} %>
+        <div class="col-sm-1">
+          <%= '  ' + theme.name %>
+        </div>
+        <%= render :partial => 'after_cnt', :locals => {:cnt => cnt} %>
+        <% cnt+=1 %>
+    <% end %>
+    <%= render :partial => 'final_cnt', :locals => {:cnt => cnt} %>
+
+
+    <h3>排序</h3>
+
+    <p><%= sort_link(@q, :name, '按名称排序', default_order: :desc) %></p>
+    <p><%= sort_link(@q, :time, '按出版时间排序', default_order: :desc) %></p>
+    <p><%= sort_link(@q, :updated_time, '按更新时间排序', default_order: :desc) %></p>
+    <p><%= sort_link(@q, :comment_ids.size, '按评论数量排序', default_order: :desc) %></p>
+
+  </div>
+
+
+
+</div>
+
+<br/>
+
+
+<%= simple_format("欠缺功能如下：") %>
+<ul>
+  <li> 增加权限机制</li>
+  <li> 漫画题材单标签改为多标签</li>
+  <li> 新增漫画实现优雅的时间框</li>
+  <li> 标签搜索功能</li>
+  <li> 页面美化</li>
+</ul>
+
+<br/>
+
+<%= simple_format("性能优化如下：") %>
+<ul>
+  <li> 自动删除多余图片和其他缓存</li>
+</ul>
+
